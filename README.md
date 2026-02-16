@@ -50,14 +50,33 @@ ng build --configuration production
 - This repository contains only the frontend client. Provide or run a matching backend that exposes the necessary user endpoints (GET/POST/PUT/DELETE).
 - Adjust ports and API base URL in `src/app/app.config.ts` if needed.
 
-## UI Screenshots
+## 🖼️ Application Screenshots
 
-Add screenshots to the `public/screenshots/` folder and include them below. Example:
+### View Users
 
-![Home screen](public/screenshots/home.png)
-
-(Replace the above image paths with your screenshots.)
+<img src="https://github.com/user-attachments/assets/77cefaf9-62fc-47ec-993e-ae9e08be812c" width="100%" />
 
 ---
 
-If you'd like, I can also add sample screenshots, CI/test badges, or a minimal contribution section.
+### Add User
+
+<img src="https://github.com/user-attachments/assets/7129075e-ba4b-45af-a4d4-cf1f2cde30fa" width="60%" />
+
+---
+
+### Edit User
+
+<img src="https://github.com/user-attachments/assets/aee72f5d-64bc-4c35-a41a-84e99c30398f" width="60%" />
+
+---
+
+### Remove Users
+
+<img src="https://github.com/user-attachments/assets/3320deff-b6b5-4d9a-9832-d84c3647b6cd" width="100%" />
+
+
+
+
+---
+
+Thanks
