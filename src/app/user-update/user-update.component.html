@@ -2,63 +2,140 @@
 <div class="container mt-5">
 
   <div class="card shadow-sm">
-
     <div class="card-body">
-
       <h2 class="card-title mb-4">Update User</h2>
 
-      <form [formGroup]="userForm" (ngSubmit)="updateUser()">
+      <!-- Success Alert -->
+      <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="successMessage">
+        <i class="bi bi-check-circle me-2"></i>{{ successMessage }}
+        <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+      </div>
 
+      <!-- Error Alert -->
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorMessage">
+        <i class="bi bi-exclamation-triangle me-2"></i>{{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+      </div>
+
+      <!-- Loading Spinner -->
+      <div class="text-center" *ngIf="isFormLoading">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Loading user data...</p>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="userForm" (ngSubmit)="updateUser()" *ngIf="!isFormLoading">
+
+        <!-- First Name -->
         <div class="mb-3">
-
-          <label for="first_name" class="form-label">First Name</label>
-
-          <input type="text" id="first_name" class="form-control" formControlName="first_name" required>
-
+          <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
+          <input 
+            type="text" 
+            id="first_name" 
+            class="form-control" 
+            [class.is-invalid]="userForm.get('first_name')?.invalid && userForm.get('first_name')?.touched"
+            formControlName="first_name" 
+            placeholder="Enter first name"
+            [disabled]="isLoading"
+          >
+          <div class="invalid-feedback" *ngIf="userForm.get('first_name')?.errors?.['required'] && userForm.get('first_name')?.touched">
+            First name is required
+          </div>
+          <div class="invalid-feedback" *ngIf="userForm.get('first_name')?.errors?.['minlength'] && userForm.get('first_name')?.touched">
+            First name must be at least 2 characters
+          </div>
         </div>
 
+        <!-- Last Name -->
         <div class="mb-3">
-
-          <label for="last_name" class="form-label">Last Name</label>
-
-          <input type="text" id="last_name" class="form-control" formControlName="last_name" required>
-
+          <label for="last_name" class="form-label">Last Name <span class="text-danger">*</span></label>
+          <input 
+            type="text" 
+            id="last_name" 
+            class="form-control" 
+            [class.is-invalid]="userForm.get('last_name')?.invalid && userForm.get('last_name')?.touched"
+            formControlName="last_name" 
+            placeholder="Enter last name"
+            [disabled]="isLoading"
+          >
+          <div class="invalid-feedback" *ngIf="userForm.get('last_name')?.errors?.['required'] && userForm.get('last_name')?.touched">
+            Last name is required
+          </div>
+          <div class="invalid-feedback" *ngIf="userForm.get('last_name')?.errors?.['minlength'] && userForm.get('last_name')?.touched">
+            Last name must be at least 2 characters
+          </div>
         </div>
 
+        <!-- Email -->
         <div class="mb-3">
-
-          <label for="email" class="form-label">Email</label>
-
-          <input type="email" id="email" class="form-control" formControlName="email" required>
-
+          <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+          <input 
+            type="email" 
+            id="email" 
+            class="form-control" 
+            [class.is-invalid]="userForm.get('email')?.invalid && userForm.get('email')?.touched"
+            formControlName="email" 
+            placeholder="Enter email address"
+            [disabled]="isLoading"
+          >
+          <div class="invalid-feedback" *ngIf="userForm.get('email')?.errors?.['required'] && userForm.get('email')?.touched">
+            Email is required
+          </div>
+          <div class="invalid-feedback" *ngIf="userForm.get('email')?.errors?.['email'] && userForm.get('email')?.touched">
+            Please enter a valid email address
+          </div>
         </div>
 
+        <!-- Password -->
         <div class="mb-3">
-
-          <label for="password" class="form-label">Password</label>
-
-          <input type="password" id="password" class="form-control" formControlName="password" required>
-
+          <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+          <input 
+            type="password" 
+            id="password" 
+            class="form-control" 
+            [class.is-invalid]="userForm.get('password')?.invalid && userForm.get('password')?.touched"
+            formControlName="password" 
+            placeholder="Enter password (min 6 characters)"
+            [disabled]="isLoading"
+          >
+          <div class="invalid-feedback" *ngIf="userForm.get('password')?.errors?.['required'] && userForm.get('password')?.touched">
+            Password is required
+          </div>
+          <div class="invalid-feedback" *ngIf="userForm.get('password')?.errors?.['minlength'] && userForm.get('password')?.touched">
+            Password must be at least 6 characters
+          </div>
         </div>
 
+        <!-- Image -->
         <div class="mb-3">
-
-          <label for="image" class="form-label">Profile Image</label>
-
-          <input type="file" id="image" class="form-control" (change)="onFileSelected($event)">
-
+          <label for="image" class="form-label">Profile Image <span class="text-muted">(Optional)</span></label>
+          <input 
+            type="file" 
+            id="image" 
+            class="form-control" 
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            [disabled]="isLoading"
+          >
+          <small class="form-text text-muted">Allowed formats: JPEG, PNG, GIF, WebP. Max size: 5MB</small>
         </div>
 
-        <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
-
-          Add User
-
-        </button>
-
+        <!-- Submit Button -->
+        <div class="d-flex gap-2">
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            [disabled]="userForm.invalid || isLoading"
+          >
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            {{ isLoading ? 'Updating...' : 'Update User' }}
+          </button>
+          <a routerLink="/users" class="btn btn-secondary">Cancel</a>
+        </div>
       </form>
-
     </div>
-
   </div>
 
 </div>

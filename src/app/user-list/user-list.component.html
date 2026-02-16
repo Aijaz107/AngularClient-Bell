@@ -1,67 +1,69 @@
 <div class="container mt-4">
 
   <div class="d-flex justify-content-between align-items-center mb-3">
-
     <h2 class="mb-0">User List</h2>
-
     <a routerLink="/users/create" class="btn btn-primary">Add User</a>
-
   </div>
 
-  <table class="table table-bordered table-hover" *ngIf="users.length > 0">
+  <!-- Success Alert -->
+  <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="successMessage">
+    {{ successMessage }}
+    <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+  </div>
 
+  <!-- Error Alert -->
+  <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+    <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="text-center" *ngIf="isLoading">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading users...</p>
+  </div>
+
+  <!-- Users Table -->
+  <table class="table table-bordered table-hover" *ngIf="users.length > 0 && !isLoading">
     <thead class="table-light">
-
       <tr>
-
         <th>ID</th>
-
         <th>First Name</th>
-
         <th>Last Name</th>
-
         <th>Email</th>
-
         <th>Image</th>
-
         <th>Actions</th>
-
       </tr>
-
     </thead>
-
     <tbody>
-
       <tr *ngFor="let user of users">
-
         <td>{{ user.id }}</td>
-
         <td>{{ user.first_name }}</td>
-
         <td>{{ user.last_name }}</td>
-
         <td>{{ user.email }}</td>
-
         <td>
-
           <img *ngIf="user.image" [src]="'http://localhost:5000/uploads/photos/' + user.image" alt="User Image" width="80" class="img-thumbnail" />
-
         </td>
-
         <td>
-
           <button (click)="editUser(user.id)" class="btn btn-success btn-sm me-2">Edit</button>
-
-          <button (click)="deleteUser(user.id)" class="btn btn-danger btn-sm">Delete</button>
-
+          <button 
+            (click)="deleteUser(user.id, user.first_name)" 
+            class="btn btn-danger btn-sm"
+            [disabled]="deletingId === user.id"
+          >
+            <span *ngIf="deletingId === user.id" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            {{ deletingId === user.id ? 'Deleting...' : 'Delete' }}
+          </button>
         </td>
-
       </tr>
-
     </tbody>
-
   </table>
 
-  <p *ngIf="users.length === 0" class="text-muted">No users found.</p>
+  <!-- No Users Message -->
+  <div class="alert alert-info" role="alert" *ngIf="users.length === 0 && !isLoading">
+    <i class="bi bi-info-circle me-2"></i>No users found. <a routerLink="/users/create">Create one now!</a>
+  </div>
 
 </div>
