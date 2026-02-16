@@ -1,59 +1,63 @@
-# NgFlask
+# AngularClient-Bell
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
+A small Angular CRUD client for managing users 
 
-## Development server
+## Features
 
-To start a local development server, run:
+- List, create, update, and delete users
+- Simple, responsive UI built with Angular components
+- Client-side form validation and basic error handling
 
-```bash
-ng serve
-```
+## Quick Start (Run locally)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Prerequisites: Node.js (16+ recommended), npm, and (optionally) Angular CLI.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1. Install dependencies
 
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+2. Run the development server
 
 ```bash
-ng generate --help
+ng serve --open
 ```
 
-## Building
+The app will be available at http://localhost:4200/ by default.
 
-To build the project run:
+3. Run unit tests
 
 ```bash
-ng build
+ng test --watch=false
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+4. Build for production
 
 ```bash
-ng test
+ng build --configuration production
 ```
 
-## Running end-to-end tests
+## Configuration & Key Files
 
-For end-to-end (e2e) testing, run:
+- API/backend: The client expects a REST API (adjust base URL in `src/app/app.config.ts`).
+- Models: `src/app/model/user.model.ts`
+- Services: `src/app/services/user.service.ts`
+- Routes and main app config: `src/app/app.routes.ts`, `src/app/app.config.ts`
 
-```bash
-ng e2e
-```
+## Additional Notes
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- This repository contains only the frontend client. Provide or run a matching backend that exposes the necessary user endpoints (GET/POST/PUT/DELETE).
+- Adjust ports and API base URL in `src/app/app.config.ts` if needed.
 
-## Additional Resources
+## UI Screenshots
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Add screenshots to the `public/screenshots/` folder and include them below. Example:
+
+![Home screen](public/screenshots/home.png)
+
+(Replace the above image paths with your screenshots.)
+
+---
+
+If you'd like, I can also add sample screenshots, CI/test badges, or a minimal contribution section.
