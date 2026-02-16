@@ -1,23 +1,36 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from '../model/user.model';
 import { UserService } from '../services/user.service';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+/**
+ * UserListComponent
+ *
+ * Displays a table of users and provides edit/delete actions. This component
+ * delegates HTTP interactions to `UserService` and focuses on UI state and
+ * presentation concerns such as loading and success/error messages.
+ */
 @Component({
   selector: 'app-user-list',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })
 export class UserListComponent implements OnInit, OnDestroy {
+  /** Loaded users */
   users: User[] = [];
+
+  /** UI state flags */
   isLoading = false;
   successMessage = '';
   errorMessage = '';
+
+  /** Currently deleting user id (used to disable the delete button) */
   deletingId: number | null = null;
+
   private destroy$ = new Subject<void>();
 
   constructor(private userService: UserService, private router: Router) { }
@@ -26,6 +39,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.getUsers();
   }
 
+  /** Load users from the API and update the component state. */
   getUsers(): void {
     this.isLoading = true;
     this.errorMessage = '';
@@ -49,6 +63,10 @@ export class UserListComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * Delete a user after confirmation. On success the list is refreshed and
+   * a transient success message is shown.
+   */
   deleteUser(id: number, firstName: string): void {
     if (!confirm(`Are you sure you want to delete ${firstName}?`)) {
       return;
@@ -77,6 +95,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       });
   }
 
+  /** Navigate to the edit page for the given user id. */
   editUser(id: number): void {
     this.router.navigate([`/users/edit/${id}`]);
   }

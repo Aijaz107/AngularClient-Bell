@@ -1,11 +1,24 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+/**
+ * UserCreateComponent
+ *
+ * Responsible for rendering and validating the new-user form. The component
+ * uses a reactive form to validate inputs locally and submits a FormData
+ * payload to the backend so images can be uploaded together with form fields.
+ *
+ * Notes:
+ * - Keep UI responsibilities here; business logic and HTTP calls live in
+ *   `UserService` which returns Observables.
+ * - The component performs lightweight client-side validation for image
+ *   type/size before sending the request.
+ */
 @Component({
   selector: 'app-user-create',
   imports: [FormsModule, CommonModule, ReactiveFormsModule],
@@ -13,10 +26,16 @@ import { takeUntil } from 'rxjs/operators';
   styleUrl: './user-create.component.css'
 })
 export class UserCreateComponent implements OnDestroy {
+  /** Reactive form for user fields */
   userForm: FormGroup;
+
+  /** Loading state used to disable inputs and show spinners */
   isLoading = false;
+
+  /** Messages shown to the user after operations */
   successMessage = '';
   errorMessage = '';
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -24,6 +43,7 @@ export class UserCreateComponent implements OnDestroy {
     private userService: UserService,
     private router: Router
   ) {
+    // Initialize the reactive form and validators
     this.userForm = this.fb.group({
       first_name: ['', [Validators.required, Validators.minLength(2)]],
       last_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -33,6 +53,7 @@ export class UserCreateComponent implements OnDestroy {
     });
   }
 
+  /** Handler for file input change events. Performs quick client-side checks. */
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -56,6 +77,7 @@ export class UserCreateComponent implements OnDestroy {
     }
   }
 
+  /** Build FormData and submit the create request via `UserService`. */
   createUser(): void {
     if (this.userForm.invalid) {
       this.errorMessage = 'Please fill in all required fields correctly';
@@ -96,6 +118,7 @@ export class UserCreateComponent implements OnDestroy {
       });
   }
 
+  /** Clear visible error after a short delay to improve UX. */
   private clearAlertAfterDelay(): void {
     setTimeout(() => {
       this.errorMessage = '';

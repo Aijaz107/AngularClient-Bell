@@ -1,12 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from '../model/user.model';
 import { UserService } from '../services/user.service';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+/**
+ * UserUpdateComponent
+ *
+ * Responsible for loading a user record into a reactive form and submitting
+ * updates. The component fetches the initial values using the route `id`
+ * parameter and maintains UI state (loading, success, error) separate from
+ * the service layer.
+ */
 @Component({
   selector: 'app-user-update',
   templateUrl: './user-update.component.html',
@@ -14,12 +22,18 @@ import { takeUntil } from 'rxjs/operators';
   imports: [FormsModule, CommonModule, ReactiveFormsModule]
 })
 export class UserUpdateComponent implements OnInit, OnDestroy {
+  /** Reactive form used for editing the user */
   userForm: FormGroup;
+
+  /** Parsed user id from the route */
   userId!: number;
-  isLoading = false;
-  isFormLoading = false;
+
+  /** UI state flags */
+  isLoading = false; // used while saving
+  isFormLoading = false; // used while loading initial data
   successMessage = '';
   errorMessage = '';
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -28,6 +42,7 @@ export class UserUpdateComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router
   ) {
+    // Initialize the form with validators
     this.userForm = this.fb.group({
       first_name: ['', [Validators.required, Validators.minLength(2)]],
       last_name: ['', [Validators.required, Validators.minLength(2)]],
