@@ -1,0 +1,29 @@
+name: Lint (build check)
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  lint:
+    name: Build-based lint (TypeScript compile check)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run build (type-check)
+        # Running the Angular build is a pragmatic lint-like check here —
+        # it reports TypeScript errors and other compile problems.
+        run: npm run build -- --no-progress
