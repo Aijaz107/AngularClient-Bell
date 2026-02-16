@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from '../model/user.model';
 import { UserService } from '../services/user.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'app-user-update',
   templateUrl: './user-update.component.html',
   styleUrl: './user-update.component.css',
-  imports: [FormsModule, CommonModule, ReactiveFormsModule]
+  imports: [FormsModule, CommonModule, ReactiveFormsModule, RouterModule]
 })
 export class UserUpdateComponent implements OnInit, OnDestroy {
   /** Reactive form used for editing the user */

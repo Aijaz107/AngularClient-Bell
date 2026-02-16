@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from '../model/user.model';
 import { UserService } from '../services/user.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
  */
 @Component({
   selector: 'app-user-list',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })
