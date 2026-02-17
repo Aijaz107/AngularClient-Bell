@@ -10,7 +10,7 @@ A small Angular CRUD client for managing users
 
 ## Quick Start (Run locally)
 
-Prerequisites: Node.js (16+ recommended), npm, and (optionally) Angular CLI.
+Prerequisites: Node.js (16+ recommended), npm, and (optionally) Angular CLI.. 
 
 1. Install dependencies
 
